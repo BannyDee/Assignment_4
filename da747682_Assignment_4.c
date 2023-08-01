@@ -4,9 +4,10 @@
 #include <math.h>
 
 int extraMemoryAllocated;
+
 void merge(int arr[],int l, int m, int r){
 	int i, j, k;
-	int n1 = m - 1 + 1;
+	int n1 = (m - l + 1);
 	int n2 = r - m;
 	int *L = (int*)malloc(n1 * sizeof(int));
 	int *R = (int*)malloc(n2 * sizeof(int));
@@ -47,6 +48,7 @@ void merge(int arr[],int l, int m, int r){
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+
 	if(l < r){
 		int m = (l + r)/2;
 		mergeSort(pData, l, m);
@@ -110,20 +112,15 @@ int parseData(char *inputFileName, int **ppData)
 	FILE* inFile = fopen(inputFileName,"r");
 	int dataSz = 0;
 	*ppData = NULL;
-	int i, n, *data;
+	
 	if (inFile)
 	{
 		fscanf(inFile,"%d\n",&dataSz);
 		*ppData = (int *)malloc(sizeof(int) * dataSz);
 		// Implement parse data block
-		if(*ppData == NULL){
-			printf("Cannot Allocate Memory");
-			exit (-1);
+		for(int i = 0; i < dataSz; ++i){
+			fscanf(inFile, "%d\n",*ppData + i);
 		}
-		for(i = 0; i < dataSz; ++i){
-			fscanf(inFile, "%d ", &n);
-		}
-		
 	}
 	fclose(inFile);
 	return dataSz;
@@ -156,10 +153,10 @@ int main(void)
 	
 	for (i=0;i<3;++i)
 	{
-
+	
 		int *pDataSrc, *pDataCopy;
 		int dataSz = parseData(fileNames[i], &pDataSrc);
-		
+	
 		if (dataSz <= 0)
 			continue;
 		
@@ -168,7 +165,7 @@ int main(void)
 		printf("---------------------------\n");
 		printf("Dataset Size : %d\n",dataSz);
 		printf("---------------------------\n");
-		
+
 		printf("Selection Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -179,7 +176,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-		
+
 		printf("Insertion Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -201,7 +198,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-
+		
 		printf("Merge Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
